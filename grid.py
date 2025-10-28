@@ -1,12 +1,38 @@
+from math import floor
+import random
 import agent
 
 agent = agent.Agent()
+random_obj = random.Random()
 
+def print_grid(row):
+    for row in range(rows):
+        print(grid[row])
+    return 0
 
-def create_walls():
+def calculate_wall_ratio(wall_size: int):
+    ratio = 0.4                             # Tinker with this to adjust the count of walls
+    return floor((wall_size**2) * ratio)
+
+def check_if_start_goal_are_blocked():
     pass
 
+def create_walls(wall_size):
+    max_walls = calculate_wall_ratio(wall_size)
+    current_walls = 0
 
+    while current_walls <= max_walls:
+        rand_x = random_obj.randint(0, columns-1)
+        rand_y = random_obj.randint(1, rows-1)
+
+        if grid[rand_x][rand_y] == 0:
+            grid[rand_x][rand_y] = 1
+
+        current_walls += 1
+
+    check_if_start_goal_are_blocked()
+
+    return "Walls created"
 
 print("Input the desired number of rows/columns (only quadratic grid possible)")
 grid_size = input()
@@ -26,8 +52,9 @@ print(f"Registered grid size: {rows}x{columns}")
 grid[0][0] = "S"
 grid[rows-1][columns-1] = "Z"
 
-for row in range(rows):
-    print(grid[row])
+print_grid(grid)
 
-create_walls()
+create_walls(rows)
+print()
 
+print_grid(grid)
