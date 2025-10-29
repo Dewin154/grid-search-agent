@@ -15,7 +15,12 @@ def calculate_wall_ratio(wall_size: int):
     return floor((wall_size**2) * ratio)
 
 def check_if_start_goal_are_blocked():
-    pass
+
+    start_radius = ((1,0), (0,1), (1,1))
+    goal_radius = ((rows-1, columns-2), (rows-2, columns-2), (rows-2, columns-1))
+
+    for (r, c) in (*start_radius, *goal_radius):                # *-operator unpacks both tuples into one tuple of the loop
+        grid[r][c] = 0
 
 def create_walls(wall_size):
     max_walls = calculate_wall_ratio(wall_size)
