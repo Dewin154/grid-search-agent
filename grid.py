@@ -2,7 +2,7 @@ from math import floor
 import random
 import agent
 
-agent = agent.Agent()
+
 random_obj = random.Random()
 
 def print_grid(row):
@@ -32,8 +32,7 @@ def create_walls(wall_size):
 
         if grid[rand_x][rand_y] == 0:
             grid[rand_x][rand_y] = 1
-
-        current_walls += 1
+            current_walls += 1
 
     check_if_start_goal_are_blocked()
 
@@ -63,3 +62,6 @@ create_walls(rows)
 print()
 
 print_grid(grid)
+
+agent = agent.Agent(grid)
+
