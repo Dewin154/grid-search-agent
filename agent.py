@@ -2,27 +2,42 @@ from queue import Queue
 
 
 class Agent:
-    def __init__(self, grid):
+    def __init__(self, grid, grid_size):
         self._grid = grid
+        self._grid_size = grid_size
         self._start_point = self._find_start_point()
         self._goal_point = self._find_end_point()
         self._current_point = (0,0)
         self._queue = Queue()
+        self._frontier = []
 
 
     def search_bfs(self):
         self._current_point = self._start_point
+        print("Queue:")
 
-        #while self._current_point != self._goal_point:
-        self._check_for_next_points(self._current_point)
-
-        return print(list(self._queue.queue))
+        while not self._goal_test():
+            self._check_for_next_points(self._current_point)
+            print(list(self._queue.queue))
+            self._current_point = self._queue.get()
+            if self._queue.empty():
+                return print("No Solution")
+        return print("Solution found")
 
     def _check_for_next_points(self, _current_point):
         x, y = _current_point
         next_points = [(x - 1 , y), (x + 1, y), (x, y - 1), (x, y + 1)]
         for nx, ny in next_points:
-            pass
+            if 0 <= nx < self._grid_size and 0 <= ny < self._grid_size:
+                if self._grid[nx][ny] != 1 and (nx, ny) not in self._frontier:
+                    self._queue.put((nx,ny))
+                    self._frontier.append((nx, ny)) # This needs to be there for duplicates
+
+    def _goal_test(self):
+        for (x, y) in list(self._queue.queue):
+            if (x, y) == self._goal_point:
+                return True
+        return False
 
 
     def _find_start_point(self):

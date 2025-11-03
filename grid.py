@@ -11,7 +11,7 @@ def print_grid(row):
     return 0
 
 def calculate_wall_ratio(wall_size: int):
-    ratio = 0.4                             # Tinker with this to adjust the count of walls
+    ratio = 0.3                            # Tinker with this to adjust the count of walls
     return floor((wall_size**2) * ratio)
 
 def check_if_start_goal_are_blocked():
@@ -63,5 +63,6 @@ print()
 
 print_grid(grid)
 
-agent = agent.Agent(grid)
-agent.search_bfs()
+agent = agent.Agent(grid, rows)
+print()
+agent.search_bfs()      # TODO output the found route
