@@ -64,4 +64,4 @@ print()
 print_grid(grid)
 
 agent = agent.Agent(grid)
-
+agent.search_bfs()
