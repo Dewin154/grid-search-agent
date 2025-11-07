@@ -2,14 +2,14 @@ from queue import Queue
 
 
 class Agent:
-    def __init__(self, grid, grid_size):
-        self._grid = grid
-        self._grid_size = grid_size
+    def __init__(self, grid):
+        self._grid = grid.get_grid()
+        self._grid_size = len(self._grid[0])
         self._start_point = self._find_start_point()
         self._goal_point = self._find_end_point()
         self._current_point = (0,0)
         self._queue = Queue()
-        self._frontier = []
+        self.visited_points = []
 
 
     def search_bfs(self):
@@ -29,9 +29,9 @@ class Agent:
         next_points = [(x - 1 , y), (x + 1, y), (x, y - 1), (x, y + 1)]
         for nx, ny in next_points:
             if 0 <= nx < self._grid_size and 0 <= ny < self._grid_size:
-                if self._grid[nx][ny] != 1 and (nx, ny) not in self._frontier:
+                if self._grid[nx][ny] != 1 and (nx, ny) not in self.visited_points:
                     self._queue.put((nx,ny))
-                    self._frontier.append((nx, ny)) # This needs to be there for duplicates
+                    self.visited_points.append((nx, ny)) # This needs to be there for duplicates
 
     def _goal_test(self):
         for (x, y) in list(self._queue.queue):
