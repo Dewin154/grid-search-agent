@@ -11,7 +11,6 @@ class Agent:
         self._queue = Queue()
         self.visited_points = []
 
-
     def search_bfs(self):
         self._current_point = self._start_point
         print("Queue:")
@@ -34,11 +33,7 @@ class Agent:
                     self.visited_points.append((nx, ny)) # This needs to be there for duplicates
 
     def _goal_test(self):
-        for (x, y) in list(self._queue.queue):
-            if (x, y) == self._goal_point:
-                return True
-        return False
-
+        return any((x, y) == self._goal_point for (x, y) in self._queue.queue) # any() returns True immediately, otherwise False
 
     def _find_start_point(self):
         start_point = [(x,y) for x in range(len(self._grid)) for y in range(len(self._grid[0])) if self._grid[x][y] == "S"]

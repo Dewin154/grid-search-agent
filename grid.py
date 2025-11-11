@@ -13,16 +13,13 @@ class Grid:
         self._grid = []
         self._create_grid(self._grid_size)
 
-
     def print_grid(self):
         for row in range(self._rows):
             print(self._grid[row])
         return 0
 
-
     def get_grid(self):
         return self._grid
-
 
     def _create_grid(self, grid_size):
         rows = columns = grid_size
@@ -32,7 +29,6 @@ class Grid:
         print(f"Registered grid size: {rows}x{columns}")
         self._create_walls(grid_size)
 
-
     def _check_if_start_goal_are_blocked(self):
 
         start_radius = ((1,0), (0,1), (1,1))
@@ -40,7 +36,6 @@ class Grid:
 
         for (r, c) in (*start_radius, *goal_radius):                # *-operator unpacks both tuples into one tuple of the loop
             self._grid[r][c] = 0
-
 
     def _create_walls(self, wall_size):
         max_walls = self._calculate_wall_ratio(wall_size)
@@ -58,7 +53,6 @@ class Grid:
 
         return "Walls created"
 
-
     def _parse_input(self, grid_size: str) -> int:
         default_value = 10
         try:
@@ -68,7 +62,6 @@ class Grid:
             print("Invalid input, size of 10 initialized")
 
         return temp if self._minimal_grid_size < temp < self._maximal_grid_size else default_value
-
 
     @staticmethod
     def _calculate_wall_ratio(wall_size: int) -> int:
