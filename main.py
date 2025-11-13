@@ -7,7 +7,7 @@ import gui
 def main():
     print("Input the desired number of rows/columns (only quadratic grid possible)")
 
-    my_gui = gui.GUI()
+    #my_gui = gui.GUI()
 
 
     my_grid = grid.Grid(grid_size=input())
