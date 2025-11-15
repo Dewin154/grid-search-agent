@@ -7,6 +7,7 @@ class Grid:
     def __init__(self, grid_size):
         self._minimal_grid_size = 2
         self._maximal_grid_size = 60
+        self._wall_ratio = 0.3
         self._grid_size = self._parse_input(grid_size)
         self._rows = self._columns = self._grid_size
         self._random_obj = random.Random()
@@ -51,7 +52,7 @@ class Grid:
 
         self._check_if_start_goal_are_blocked()
 
-        return "Walls created"
+        return 0
 
     def _parse_input(self, grid_size: str) -> int:
         default_value = 10
@@ -63,10 +64,8 @@ class Grid:
 
         return temp if self._minimal_grid_size < temp < self._maximal_grid_size else default_value
 
-    @staticmethod
-    def _calculate_wall_ratio(wall_size: int) -> int:
-        ratio = 0.3                            # Tinker with this to adjust the count of walls
-        return floor((wall_size**2) * ratio)
+    def _calculate_wall_ratio(self, wall_size: int) -> int:
+        return floor((wall_size**2) * self._wall_ratio)
 
 
 

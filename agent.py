@@ -1,6 +1,7 @@
 from queue import Queue
 
 
+
 class Agent:
     def __init__(self, grid):
         self._grid = grid.get_grid()
@@ -18,6 +19,9 @@ class Agent:
             self.node = node
             self.parent = parent
 
+        def __str__(self):
+            return f"(Node: {self.node}, Parent:{self.parent})"
+
     def search_bfs(self):
         self._current_point = self._start_point
         print("Queue:")
@@ -30,7 +34,7 @@ class Agent:
                 return print("No Solution")
 
         self._shortest_path = self._reconstruct_shortest_path()
-        return print(f"Solution found {self._shortest_path}")
+        return print(f"Solution found: {self._shortest_path}")
 
     def _check_for_next_points(self, _current_point):
         x, y = _current_point
