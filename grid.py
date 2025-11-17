@@ -15,6 +15,7 @@ class Grid:
         self._create_grid(self._grid_size)
 
     def print_grid(self):
+        print()
         for row in range(self._rows):
             print(self._grid[row])
         return 0
@@ -22,12 +23,15 @@ class Grid:
     def get_grid(self):
         return self._grid
 
+    def get_grid_size(self):
+        return self._grid_size
+
     def _create_grid(self, grid_size):
         rows = columns = grid_size
         self._grid = [[0] * columns for _ in range(rows)]
         self._grid[0][0] = "S"
         self._grid[rows - 1][columns - 1] = "Z"
-        print(f"Registered grid size: {rows}x{columns}")
+        #print(f"Registered grid size: {rows}x{columns}")
         self._create_walls(grid_size)
 
     def _check_if_start_goal_are_blocked(self):
@@ -60,7 +64,7 @@ class Grid:
             temp = int(grid_size)
         except ValueError:
             temp = default_value
-            print("Invalid input, size of 10 initialized")
+
 
         return temp if self._minimal_grid_size < temp < self._maximal_grid_size else default_value
 

@@ -5,7 +5,7 @@ from queue import Queue
 class Agent:
     def __init__(self, grid):
         self._grid = grid.get_grid()
-        self._grid_size = len(self._grid[0])
+        self._grid_size =  self._grid.get_grid_size() #len(self._grid[0])
         self._start_point = self._find_start_point()
         self._goal_point = self._find_end_point()
         self._current_point = (0, 0)

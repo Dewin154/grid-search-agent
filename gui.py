@@ -1,18 +1,55 @@
-from tkinter import *
+import tkinter
+import agent
+import grid
+
 
 class GUI:
     def __init__(self):
-        self._root = Tk(screenName="Search Agent", baseName="Search Agent", className=" Search Agent Window", useTk=1)
+        self._root = tkinter.Tk(screenName="Search Agent", baseName="Search Agent", className=" Search Agent Window", useTk=1)
         self._root.minsize(1280, 720)
+        self._root.resizable(False, False)
 
-        self._confirm_button = Button(self._root, text="Confirm", width=50, command=self._root.destroy)
-        self._confirm_button.grid(row=2, column=5)
+        self._entry_field_label = tkinter.Label(self._root, text="Enter desired grid size (Only quadratic grid possible)")
+        self._entry_field_label.place(x=0, y=0)
+
+        self._display_text = tkinter.Label(self._root, text="")
+        self._display_text.place(relx=0.094, y = 130, anchor="center")
+
+        self._entry_field_for_gird_size = tkinter.Entry(self._root)
+        self._entry_field_for_gird_size.place(x=60, y=30)
+
+        self._confirm_button = tkinter.Button(self._root, text="Confirm",bg="green", width=10, command=self._save_input)
+        self._confirm_button.place(x=82, y=60)
+
+        self._clear_button = tkinter.Button(self._root, text="Delete grid", width=10, bg="red", command=self._delete_grid)
+        self._clear_button.place(x=82, y=90)
+
+        self._my_grid = None
 
 
-        self._entry_field_label = Label(self._root, text="Enter desired grid size (Only quadratic grid possible)")
-        self._entry_field_label.grid(row=0, column=0)
-
-        self._entry_field_for_gird_size = Entry(self._root)
-        self._entry_field_for_gird_size.grid(row=0, column=5)
-
+    def run(self):
         self._root.mainloop()
+
+    def _save_input(self):
+        self._grid_size_input = self._entry_field_for_gird_size.get()
+        self._entry_field_for_gird_size.delete(0, "end")
+
+        if self._my_grid is None:
+            if self._grid_size_input == "":
+                self._display_text.config(text="Please enter a grid size.")
+            else:
+                self._my_grid = grid.Grid(self._grid_size_input)
+                self._grid_size_input = self._my_grid.get_grid_size()
+                self._my_grid.print_grid()
+                self._display_text.config(text=f"Registered grid size: {self._grid_size_input} x {self._grid_size_input}")
+        else:
+            if self._grid_size_input != "":
+                current_size = self._my_grid.get_grid_size()
+                self._display_text.config(text=f"Error: Grid {current_size}x{current_size} exists. Delete first.")
+
+
+    def _delete_grid(self):
+        if self._my_grid is not None:
+            self._grid_size_input = 0
+            self._my_grid = None
+            self._display_text.config(text="Grid deleted!")
