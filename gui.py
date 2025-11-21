@@ -6,7 +6,10 @@ import grid
 class GUI:
     def __init__(self):
         self._root = tkinter.Tk(screenName="Search Agent", baseName="Search Agent", className=" Search Agent Window", useTk=1)
-        self._root.minsize(1280, 720)
+        self._my_grid = None
+        self._my_canvas = tkinter.Canvas(self._root, width=980, height=980, bg="white")
+
+        self._root.minsize(1280, 1000)
         self._root.resizable(False, False)
 
         self._entry_field_label = tkinter.Label(self._root, text="Enter desired grid size (Only quadratic grid possible)")
@@ -24,7 +27,7 @@ class GUI:
         self._clear_button = tkinter.Button(self._root, text="Delete grid", width=10, bg="red", command=self._delete_grid)
         self._clear_button.place(x=82, y=90)
 
-        self._my_grid = None
+        self._my_canvas.place(x=285, y=8)
 
 
     def run(self):
@@ -40,8 +43,8 @@ class GUI:
             else:
                 self._my_grid = grid.Grid(self._grid_size_input)
                 self._grid_size_input = self._my_grid.get_grid_size()
-                self._my_grid.print_grid()
                 self._display_text.config(text=f"Registered grid size: {self._grid_size_input} x {self._grid_size_input}")
+                self._draw_rectangle(self._grid_size_input)
         else:
             if self._grid_size_input != "":
                 current_size = self._my_grid.get_grid_size()
@@ -53,3 +56,23 @@ class GUI:
             self._grid_size_input = 0
             self._my_grid = None
             self._display_text.config(text="Grid deleted!")
+            self._my_canvas.delete("all")
+
+    def _draw_rectangle(self, grid_size_input):
+        rectangle_length = int(980/grid_size_input)
+        x0 = 4
+        y0 = 4
+        x1 = x0 + rectangle_length
+        y1 = y0 + rectangle_length
+
+        for column in range(grid_size_input):
+            offset_y = column*rectangle_length
+            for row in range(grid_size_input):
+                offset_x = row*rectangle_length
+
+                if self._my_grid.get_grid()[column][row] == 1:
+                    self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="black")
+                else:
+                    self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y)
+
+
