@@ -72,6 +72,10 @@ class GUI:
 
                 if self._my_grid.get_grid()[column][row] == 1:
                     self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="black")
+                elif self._my_grid.get_grid()[column][row] == "S":
+                    self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y,fill="green")
+                elif self._my_grid.get_grid()[column][row] == "Z":
+                    self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="blue")
                 else:
                     self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y)
 
