@@ -5,7 +5,7 @@ from queue import Queue
 class Agent:
     def __init__(self, grid):
         self._grid = grid.get_grid()
-        self._grid_size =  self._grid.get_grid_size() #len(self._grid[0])
+        self._grid_size = len(self._grid[0])
         self._start_point = self._find_start_point()
         self._goal_point = self._find_end_point()
         self._current_point = (0, 0)
@@ -24,17 +24,24 @@ class Agent:
 
     def search_bfs(self):
         self._current_point = self._start_point
-        print("Queue:")
 
-        while not self._goal_test():
+        while True:
+            if self._goal_test():
+                break
+
             self._check_for_next_points(self._current_point)
-            print(list(self._queue.queue))
-            self._current_point = self._queue.get()
+
             if self._queue.empty():
-                return print("No Solution")
+                self._shortest_path = None
+                return 0 #print("No Solution")
+
+            self._current_point = self._queue.get()
 
         self._shortest_path = self._reconstruct_shortest_path()
-        return print(f"Solution found: {self._shortest_path}")
+        return 0 #print(f"Solution found: {self._shortest_path}")
+
+    def get_shortest_path(self):
+        return None if self._shortest_path is None else list(self._shortest_path)
 
     def _check_for_next_points(self, _current_point):
         x, y = _current_point
@@ -60,7 +67,7 @@ class Agent:
         return list(reversed(shortest_path))
 
     def _goal_test(self):
-        return any((x, y) == self._goal_point for (x, y) in self._queue.queue) # any() returns True immediately, otherwise False
+        return self._current_point == self._goal_point #any((x, y) == self._goal_point for (x, y) in self._queue.queue) # any() returns True immediately, otherwise False
 
     def _find_start_point(self):
         start_point = [(x, y) for x in range(len(self._grid)) for y in range(len(self._grid[0])) if self._grid[x][y] == "S"]

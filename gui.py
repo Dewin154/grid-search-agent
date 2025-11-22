@@ -27,6 +27,9 @@ class GUI:
         self._clear_button = tkinter.Button(self._root, text="Delete grid", width=10, bg="red", command=self._delete_grid)
         self._clear_button.place(x=82, y=90)
 
+        self._start_search_button = tkinter.Button(self._root, text="Start Search", width=10, command=self._start_search)
+        self._start_search_button.place(x =82, y=150)
+
         self._my_canvas.place(x=285, y=8)
 
 
@@ -58,7 +61,19 @@ class GUI:
             self._display_text.config(text="Grid deleted!")
             self._my_canvas.delete("all")
 
-    def _draw_rectangle(self, grid_size_input):
+    def _start_search(self):
+        if self._my_grid is None:
+            self._display_text.config(text=f"Error: Grid is not initialized!")
+        else:
+            my_agent = agent.Agent(self._my_grid)
+            my_agent.search_bfs()
+            shortest_path = my_agent.get_shortest_path()
+            if shortest_path is None:
+                self._display_text.config(text=f"No shortest Path exists!")
+            else:
+                self._draw_rectangle(self._grid_size_input, shortest_path)
+
+    def _draw_rectangle(self, grid_size_input, shortest_path=None):
         rectangle_length = int(980/grid_size_input)
         x0 = 4
         y0 = 4
@@ -70,13 +85,18 @@ class GUI:
             for row in range(grid_size_input):
                 offset_x = row*rectangle_length
 
-                if self._my_grid.get_grid()[column][row] == 1:
-                    self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="black")
-                elif self._my_grid.get_grid()[column][row] == "S":
-                    self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y,fill="green")
-                elif self._my_grid.get_grid()[column][row] == "Z":
-                    self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="blue")
+                if shortest_path is not None:
+                    for cords in shortest_path:
+                        if cords == (column, row):
+                            self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="red")
                 else:
-                    self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y)
+                    if self._my_grid.get_grid()[column][row] == 1:
+                        self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="black")
+                    elif self._my_grid.get_grid()[column][row] == "S":
+                        self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="green")
+                    elif self._my_grid.get_grid()[column][row] == "Z":
+                        self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="blue")
+                    else:
+                        self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y)
 
 
