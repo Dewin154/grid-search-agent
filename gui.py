@@ -74,7 +74,7 @@ class GUI:
                 self._draw_rectangle(self._grid_size_input, shortest_path)
 
     def _draw_rectangle(self, grid_size_input, shortest_path=None):
-        rectangle_length = int(980/grid_size_input)
+        rectangle_length = round(980/grid_size_input, 1) - 0.15
         x0 = 4
         y0 = 4
         x1 = x0 + rectangle_length

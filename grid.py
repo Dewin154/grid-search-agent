@@ -4,16 +4,19 @@ import random
 
 
 class Grid:
+    MINIMAL_GRID_SIZE = 2
+    MAXIMAL_GRID_SIZE = 60
+    WALL_RATIO = 0.3
+    START_POINT = "S"
+    GOAL_POINT = "Z"
+
     def __init__(self, grid_size):
-        self._minimal_grid_size = 2
-        self._maximal_grid_size = 60
-        self._wall_ratio = 0.3
-        self._start_point = "S"
-        self._goal_point = "Z"
         self._grid_size = self._parse_input(grid_size)
         self._rows = self._columns = self._grid_size
         self._random_obj = random.Random()
         self._grid = []
+        self._start_point_cords: tuple = (0,0)
+        self._goal_point_cords: tuple = (self._rows - 1,self._columns - 1)
         self._create_grid(self._grid_size)
 
     def print_grid(self) -> None:
@@ -21,6 +24,12 @@ class Grid:
         for row in range(self._rows):
             print(self._grid[row])
         return
+
+    def get_start_point_cords(self) -> tuple:
+        return self._start_point_cords
+
+    def get_goal_point_cords(self) -> tuple:
+        return self._goal_point_cords
 
     def get_grid(self) -> list:
         return self._grid
@@ -31,8 +40,8 @@ class Grid:
     def _create_grid(self, grid_size: int) -> None:
         rows = columns = grid_size
         self._grid = [[0] * columns for _ in range(rows)]
-        self._grid[0][0] = self._start_point
-        self._grid[rows - 1][columns - 1] = self._goal_point
+        self._grid[0][0] = self.START_POINT
+        self._grid[rows - 1][columns - 1] = self.GOAL_POINT
         self._create_walls(grid_size)
 
     def _check_if_start_goal_are_blocked(self) -> None:
@@ -64,10 +73,10 @@ class Grid:
             temp = int(grid_size)
         except ValueError:
             temp = default_value
-        return temp if self._minimal_grid_size < temp < self._maximal_grid_size else default_value
+        return temp if self.MINIMAL_GRID_SIZE < temp < self.MAXIMAL_GRID_SIZE else default_value
 
     def _calculate_wall_ratio(self, grid_size: int) -> int:
-        return floor((grid_size ** 2) * self._wall_ratio)
+        return floor((grid_size ** 2) * self.WALL_RATIO)
 
 
 

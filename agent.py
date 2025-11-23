@@ -2,18 +2,19 @@ from queue import Queue
 
 
 
+
 class Agent:
     def __init__(self, grid):
-        self._grid = grid.get_grid()
-        self._grid_size = len(self._grid[0])
-        self._start_point = self._find_start_point()
-        self._goal_point = self._find_end_point()
-        self._current_point = (0, 0)
+        self._grid_obj = grid
+        self._grid_list = self._grid_obj.get_grid()
+        self._grid_size = len(self._grid_list[0])
+        self._start_point = self._grid_obj.get_start_point_cords()
+        self._goal_point = self._grid_obj.get_goal_point_cords()
+        self._current_point = self._start_point
         self._wall = 1
         self._queue = Queue()
-        self.visited_points = [self._current_point]     # Starting point counts as already visited
         self._shortest_path = [Agent.Node(self._start_point)]
-
+        self.visited_points = [self._current_point]     # Starting point counts as already visited
 
     class Node:
         def __init__(self, node=None, parent=None):
@@ -29,13 +30,10 @@ class Agent:
         while True:
             if self._goal_test():
                 break
-
             self._check_for_next_points(self._current_point)
-
             if self._queue.empty():
                 self._shortest_path = None
                 return
-
             self._current_point = self._queue.get()
 
         self._shortest_path = self._reconstruct_shortest_path()
@@ -50,7 +48,7 @@ class Agent:
 
         for nx, ny in next_points:
             if 0 <= nx < self._grid_size and 0 <= ny < self._grid_size:
-                if self._grid[nx][ny] != self._wall and (nx, ny) not in self.visited_points:
+                if self._grid_list[nx][ny] != self._wall and (nx, ny) not in self.visited_points:
                     self._queue.put((nx,ny))
                     self.visited_points.append((nx, ny)) # This needs to be there to avoid duplicates in queue
                     self._shortest_path.append(Agent.Node((nx, ny), _current_point))
@@ -70,13 +68,3 @@ class Agent:
 
     def _goal_test(self) -> bool:
         return self._current_point == self._goal_point
-
-    def _find_start_point(self) -> tuple:
-        start_point = [(x, y) for x in range(len(self._grid)) for y in range(len(self._grid[0])) if self._grid[x][y] == "S"]
-        start_point = start_point[0]
-        return start_point
-
-    def _find_end_point(self) -> tuple:
-        end_point = [(x, y) for x in range(len(self._grid)) for y in range(len(self._grid[0])) if self._grid[x][y] == "Z"]
-        end_point = end_point[0]
-        return end_point
