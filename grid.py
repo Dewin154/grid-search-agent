@@ -8,42 +8,42 @@ class Grid:
         self._minimal_grid_size = 2
         self._maximal_grid_size = 60
         self._wall_ratio = 0.3
+        self._start_point = "S"
+        self._goal_point = "Z"
         self._grid_size = self._parse_input(grid_size)
         self._rows = self._columns = self._grid_size
         self._random_obj = random.Random()
         self._grid = []
         self._create_grid(self._grid_size)
 
-    def print_grid(self):
+    def print_grid(self) -> None:
         print()
         for row in range(self._rows):
             print(self._grid[row])
-        return 0
+        return
 
-    def get_grid(self):
+    def get_grid(self) -> list:
         return self._grid
 
-    def get_grid_size(self):
+    def get_grid_size(self) -> int:
         return self._grid_size
 
-    def _create_grid(self, grid_size):
+    def _create_grid(self, grid_size: int) -> None:
         rows = columns = grid_size
         self._grid = [[0] * columns for _ in range(rows)]
-        self._grid[0][0] = "S"
-        self._grid[rows - 1][columns - 1] = "Z"
-        #print(f"Registered grid size: {rows}x{columns}")
+        self._grid[0][0] = self._start_point
+        self._grid[rows - 1][columns - 1] = self._goal_point
         self._create_walls(grid_size)
 
-    def _check_if_start_goal_are_blocked(self):
-
+    def _check_if_start_goal_are_blocked(self) -> None:
         start_radius = ((1,0), (0,1), (1,1))
         goal_radius = ((self._rows-1, self._columns-2), (self._rows-2, self._columns-2), (self._rows-2, self._columns-1))
 
-        for (r, c) in (*start_radius, *goal_radius):                # *-operator unpacks both tuples into one tuple of the loop
+        for (r, c) in (*start_radius, *goal_radius):                # *-operator unpacks both tuples into one tuple for the loop
             self._grid[r][c] = 0
 
-    def _create_walls(self, wall_size):
-        max_walls = self._calculate_wall_ratio(wall_size)
+    def _create_walls(self, grid_size):
+        max_walls = self._calculate_wall_ratio(grid_size)
         current_walls = 0
 
         while current_walls <= max_walls:
@@ -56,7 +56,7 @@ class Grid:
 
         self._check_if_start_goal_are_blocked()
 
-        return 0
+        return
 
     def _parse_input(self, grid_size: str) -> int:
         default_value = 10
@@ -64,12 +64,10 @@ class Grid:
             temp = int(grid_size)
         except ValueError:
             temp = default_value
-
-
         return temp if self._minimal_grid_size < temp < self._maximal_grid_size else default_value
 
-    def _calculate_wall_ratio(self, wall_size: int) -> int:
-        return floor((wall_size**2) * self._wall_ratio)
+    def _calculate_wall_ratio(self, grid_size: int) -> int:
+        return floor((grid_size ** 2) * self._wall_ratio)
 
 
 
