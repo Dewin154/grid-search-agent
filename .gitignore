@@ -2,3 +2,5 @@ build.bat
 /dist
 GridAgent.spec
 /build
+/.idea
+/__pycache__
