@@ -13,6 +13,6 @@ Simply download the `.exe` and run.
 ## Planned features
 - Implement more search algorithms (DFS, UCS, Best-First-Search etc.)
 - Implement animations to visualize search process
-- Implement more customization for user (e.g.: Random generated/Self-placed walls, adjust wall ratio, Grid of different shapes etc.)
+- Implement more customization for user (e.g.: Random generated/Self-placed walls, adjust wall ratio etc.)
 - Implement Reinforcement Learning solution
 - Implement interactive grid for user to customize it (in far future)
