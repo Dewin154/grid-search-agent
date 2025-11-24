@@ -1,4 +1,4 @@
-# Grid Agent Pathfinding Version 1.0.0
+# Grid Agent Pathfinding Version 1.0.1
 
 A Python simulation where an intelligent agent finds the shortest path from start to goal through a randomly generated grid using the **Breadth-First Search (BFS)** algorithm.
 
