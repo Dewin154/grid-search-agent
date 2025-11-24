@@ -3,3 +3,4 @@ GridAgent.spec
 /build
 /.idea
 /__pycache__
+*.spec
