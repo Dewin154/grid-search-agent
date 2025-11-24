@@ -58,7 +58,7 @@ class Grid:
 
         while current_walls <= max_walls:
             rand_x = self._random_obj.randint(0, self._columns-1)
-            rand_y = self._random_obj.randint(1, self._rows-1)
+            rand_y = self._random_obj.randint(0, self._rows-1)
 
             if self._grid[rand_x][rand_y] == 0:
                 self._grid[rand_x][rand_y] = Grid.WALL
