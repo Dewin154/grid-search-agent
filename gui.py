@@ -102,7 +102,6 @@ class GUI:
                     else:
                         self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y)
 
-
     @staticmethod
     def _validate_input(grid_size: str) -> int:
             default_value = 10
