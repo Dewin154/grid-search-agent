@@ -7,4 +7,11 @@ You don't need Python installed to try this out!
 
 👉 **[Download the latest executable here](https://github.com/Dewin154/grid-search-agent/releases/download/v1.0.0/GridAgent_1.0.0.exe)**
 
-Simply download the `.exe` and double-click to run.
+Simply download the `.exe` and run.
+
+## Planned features
+- Implement more search algorithms (DFS, UCS, Best-First-Search etc.)
+- Implement animations to visualize search process
+- Implement more customization for user (e.g.: Random generated/Self-placed walls, adjust wall ratio, Grid of different shapes etc.)
+- Implement Reinforcement Learning solution
+- Implement interactive grid for user to customize it (in far future)
