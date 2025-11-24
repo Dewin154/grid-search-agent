@@ -2,38 +2,36 @@
 TITLE Python App Builder
 
 echo ==========================================
-echo STEP 1: Activating Virtual Environment
+echo Step 1: activate .venv
 echo ==========================================
 
-:: Check if the .venv folder actually exists
 if not exist .venv (
-    echo ERROR: The folder .venv was not found!
-    echo Please make sure you are in the correct project directory.
+    echo FEHLER: .venv not found!
     pause
     exit
 )
 
-:: IMPORTANT: 'call' is required here.
-:: Without 'call', the script would stop immediately after activation.
 call .venv\Scripts\activate
 
-echo Environment activated successfully!
+echo.
+echo ==========================================
+echo Step 2: find version
+echo ==========================================
+
+for /f "delims=" %%i in ('python -c "import _version; print(_version.__version__)"') do set VERSION=%%i
+
+echo Found version: %VERSION%
 echo.
 
 echo ==========================================
-echo STEP 2: Running PyInstaller
+echo Step 3: buld .exe
 echo ==========================================
 
-:: --onefile: Packs everything into a single .exe file
-:: --clean: Clears PyInstaller cache to avoid errors
-:: --name: The name of your final .exe (e.g., "GridAgent")
-:: REPLACE 'main.py' with your actual python filename if it is different!
-
-pyinstaller --noconsole --onefile --clean --name "GridAgent_1.0.1" main.py
+pyinstaller --onefile --clean --name "GridAgent_v%VERSION%" main.py
 
 echo.
 echo ==========================================
-echo DONE!
-echo Your executable is ready in the 'dist' folder.
+echo Done!
+echo File saved in dist folder as: GridAgent_v%VERSION%.exe
 echo ==========================================
 pause

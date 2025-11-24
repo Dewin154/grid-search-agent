@@ -1,4 +1,5 @@
-# Grid Agent Pathfinding Version 1.0.1
+# Grid Agent Pathfinding Version
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Dewin154/grid-search-agent?label=Version&color=green)
 
 A Python simulation where an intelligent agent finds the shortest path from start to goal through a randomly generated grid using the **Breadth-First Search (BFS)** algorithm.
 
