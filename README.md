@@ -5,7 +5,7 @@ A Python simulation where an intelligent agent finds the shortest path from star
 ## Download
 You don't need Python installed to try this out!
 
-👉 **[Download the latest executable here](https://github.com/Dewin154/grid-search-agent/releases/download/v1.0.0/GridAgent_1.0.0.exe)**
+👉 **[Download the latest executable here](https://github.com/Dewin154/grid-search-agent/releases/latest)**
 
 Simply download the `.exe` and run.
 
