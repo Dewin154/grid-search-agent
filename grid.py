@@ -5,13 +5,14 @@ import random
 
 class Grid:
     MINIMAL_GRID_SIZE = 2
-    MAXIMAL_GRID_SIZE = 60
+    MAXIMAL_GRID_SIZE = 80
     WALL_RATIO = 0.3
     START_POINT = "S"
     GOAL_POINT = "Z"
+    WALL = 1
 
     def __init__(self, grid_size):
-        self._grid_size = self._parse_input(grid_size)
+        self._grid_size = grid_size
         self._rows = self._columns = self._grid_size
         self._random_obj = random.Random()
         self._grid = []
@@ -60,20 +61,12 @@ class Grid:
             rand_y = self._random_obj.randint(1, self._rows-1)
 
             if self._grid[rand_x][rand_y] == 0:
-                self._grid[rand_x][rand_y] = 1
+                self._grid[rand_x][rand_y] = Grid.WALL
                 current_walls += 1
 
         self._check_if_start_goal_are_blocked()
 
         return
-
-    def _parse_input(self, grid_size: str) -> int:
-        default_value = 10
-        try:
-            temp = int(grid_size)
-        except ValueError:
-            temp = default_value
-        return temp if self.MINIMAL_GRID_SIZE < temp < self.MAXIMAL_GRID_SIZE else default_value
 
     def _calculate_wall_ratio(self, grid_size: int) -> int:
         return floor((grid_size ** 2) * self.WALL_RATIO)

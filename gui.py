@@ -12,7 +12,10 @@ class GUI:
         self._root.minsize(1280, 1000)
         self._root.resizable(False, False)
 
-        self._entry_field_label = tkinter.Label(self._root, text="Enter desired grid size (Only quadratic grid possible)")
+        self._entry_field_label = tkinter.Label(self._root,
+                                                text=f"Enter desired grid size."
+                                                     f" Min. size: {grid.Grid.MINIMAL_GRID_SIZE},"
+                                                     f" Max. size: {grid.Grid.MAXIMAL_GRID_SIZE}")
         self._entry_field_label.place(x=0, y=0)
 
         self._display_text = tkinter.Label(self._root, text="")
@@ -28,7 +31,7 @@ class GUI:
         self._clear_button.place(x=82, y=90)
 
         self._start_search_button = tkinter.Button(self._root, text="Start Search", width=10, command=self._start_search)
-        self._start_search_button.place(x =82, y=150)
+        self._start_search_button.place(x =82, y=180)
 
         self._my_canvas.place(x=285, y=8)
 
@@ -38,6 +41,7 @@ class GUI:
 
     def _save_input(self):
         self._grid_size_input = self._entry_field_for_gird_size.get()
+        self._grid_size_input = self._validate_input(self._grid_size_input)
         self._entry_field_for_gird_size.delete(0, "end")
 
         if self._my_grid is None:
@@ -52,7 +56,6 @@ class GUI:
             if self._grid_size_input != "":
                 current_size = self._my_grid.get_grid_size()
                 self._display_text.config(text=f"Error: Grid {current_size}x{current_size} exists. Delete first.")
-
 
     def _delete_grid(self):
         if self._my_grid is not None:
@@ -74,9 +77,9 @@ class GUI:
                 self._draw_rectangle(self._grid_size_input, shortest_path)
 
     def _draw_rectangle(self, grid_size_input, shortest_path=None):
-        rectangle_length = round(980/grid_size_input, 1) - 0.15
-        x0 = 4
-        y0 = 4
+        rectangle_length = round(975/grid_size_input, 1)
+        x0 = 5
+        y0 = 5
         x1 = x0 + rectangle_length
         y1 = y0 + rectangle_length
 
@@ -92,11 +95,19 @@ class GUI:
                 else:
                     if self._my_grid.get_grid()[column][row] == 1:
                         self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="black")
-                    elif self._my_grid.get_grid()[column][row] == "S":
+                    elif self._my_grid.get_grid()[column][row] == grid.Grid.START_POINT:
                         self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="green")
-                    elif self._my_grid.get_grid()[column][row] == "Z":
+                    elif self._my_grid.get_grid()[column][row] == grid.Grid.GOAL_POINT:
                         self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y, fill="blue")
                     else:
                         self._my_canvas.create_rectangle(x0 + offset_x, y0 + offset_y, x1 + offset_x, y1 + offset_y)
 
 
+    @staticmethod
+    def _validate_input(grid_size: str) -> int:
+            default_value = 10
+            try:
+                temp = int(grid_size)
+            except ValueError:
+                temp = default_value
+            return temp if grid.Grid.MINIMAL_GRID_SIZE < temp <= grid.Grid.MAXIMAL_GRID_SIZE else default_value

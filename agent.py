@@ -1,8 +1,6 @@
 from queue import Queue
 
 
-
-
 class Agent:
     def __init__(self, grid):
         self._grid_obj = grid
@@ -11,10 +9,10 @@ class Agent:
         self._start_point = self._grid_obj.get_start_point_cords()
         self._goal_point = self._grid_obj.get_goal_point_cords()
         self._current_point = self._start_point
-        self._wall = 1
+        self._wall = self._grid_obj.WALL
         self._queue = Queue()
         self._shortest_path = [Agent.Node(self._start_point)]
-        self.visited_points = [self._current_point]     # Starting point counts as already visited
+        self._visited_points = [self._current_point]     # Starting point counts as already visited
 
     class Node:
         def __init__(self, node=None, parent=None):
@@ -48,9 +46,9 @@ class Agent:
 
         for nx, ny in next_points:
             if 0 <= nx < self._grid_size and 0 <= ny < self._grid_size:
-                if self._grid_list[nx][ny] != self._wall and (nx, ny) not in self.visited_points:
+                if self._grid_list[nx][ny] != self._wall and (nx, ny) not in self._visited_points:
                     self._queue.put((nx,ny))
-                    self.visited_points.append((nx, ny)) # This needs to be there to avoid duplicates in queue
+                    self._visited_points.append((nx, ny)) # This needs to be there to avoid duplicates in queue
                     self._shortest_path.append(Agent.Node((nx, ny), _current_point))
 
 
