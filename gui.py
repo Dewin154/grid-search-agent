@@ -5,7 +5,7 @@ import grid
 
 class GUI:
     def __init__(self):
-        self._root = tkinter.Tk(screenName="Search Agent", baseName="Search Agent", className=" Search Agent Window", useTk=1)
+        self._root = tkinter.Tk(screenName="Search Agent", baseName="Search Agent", className="Search Agent Window", useTk=1)
         self._my_grid = None
         self._my_canvas = tkinter.Canvas(self._root, width=980, height=980, bg="white")
 

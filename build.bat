@@ -29,7 +29,7 @@ echo ==========================================
 :: --name: The name of your final .exe (e.g., "GridAgent")
 :: REPLACE 'main.py' with your actual python filename if it is different!
 
-pyinstaller --onefile --clean --name "GridAgent" main.py
+pyinstaller --onefile --clean --name --noconsole "GridAgent" main.py
 
 echo.
 echo ==========================================
