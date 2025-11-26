@@ -81,7 +81,7 @@ class GUI:
             else:
                 self._draw_shortest_path(shortest_path)
 
-    def _draw_grid(self, grid_size_input):
+    def _draw_grid(self, grid_size_input):          # TODO redundancy with _draw_shortest_path()
         x0 = self._my_grid_offset_x
         y0 = self._my_grid_offset_y
         x1 = x0 + self._my_grid_rectangle_length
