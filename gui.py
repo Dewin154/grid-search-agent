@@ -5,7 +5,7 @@ import grid
 
 class GUI:
     def __init__(self):
-        self._root = tkinter.Tk(screenName="Search Agent", baseName="Search Agent", className="Search Agent Window", useTk=1)
+        self._root = tkinter.Tk(screenName="Search Agent", baseName="Search Agent", className=" Search Agent Window", useTk=1)
         self._root.minsize(1280, 1000)
         self._root.resizable(False, False)
 
@@ -38,6 +38,7 @@ class GUI:
 
         self._start_search_button = tkinter.Button(self._root, text="Start Search", width=10, command=self._start_search)
         self._start_search_button.place(x =82, y=180)
+        self._is_shortest_path_drawn = False
 
 
     def run(self):
@@ -68,6 +69,7 @@ class GUI:
             self._my_grid = None
             self._display_text.config(text="Grid deleted!")
             self._my_canvas.delete("all")
+            self._is_shortest_path_drawn = False
 
     def _start_search(self):
         if self._my_grid is None:
@@ -78,8 +80,9 @@ class GUI:
             shortest_path = my_agent.get_shortest_path()
             if shortest_path is None:
                 self._display_text.config(text=f"No shortest Path exists!")
-            else:
+            elif not self._is_shortest_path_drawn:
                 self._draw_shortest_path(shortest_path)
+                self._is_shortest_path_drawn = True
 
     def _draw_grid(self, grid_size_input):          # TODO redundancy with _draw_shortest_path()
         x0 = self._my_grid_offset_x
