@@ -54,7 +54,8 @@ class GUI:
 
         self._start_search_button = tkinter.Button(self._root, text="Start Search", width=10, command=self._start_search)
         self._start_search_button.place(x =82, y=180)
-        self._is_shortest_path_drawn = False
+
+        self._user_has_started_search = False
 
 
     def run(self):
@@ -83,23 +84,18 @@ class GUI:
         if self._my_grid is not None:
             self._grid_size_input = 0
             self._my_grid = None
-            self._is_shortest_path_drawn = False
+            self._user_has_started_search = False
             self._my_canvas.delete("all")
             self._display_text.config(text="Grid deleted!")
 
     def _start_search(self):
         if self._my_grid is None:
             self._display_text.config(text=f"Error: Grid is not initialized!")
-        else:
+        elif not self._user_has_started_search:
+            self._user_has_started_search = True
             self._my_agent = agent.Agent(self._my_grid)
             self._my_search_process = self._my_agent.search_bfs()
             self._animate_search_process()
-            """  shortest_path = self._my_agent.get_shortest_path()
-            if shortest_path is None:
-                self._display_text.config(text=f"No shortest Path exists!")
-            elif not self._is_shortest_path_drawn:
-                self._draw_shortest_path(shortest_path)
-                self._is_shortest_path_drawn = True"""
 
     def _animate_search_process(self):
         if self._my_grid is None:
@@ -118,7 +114,6 @@ class GUI:
                     self._display_text.config(text=f"No shortest Path exists!")
                 else:
                     self._draw_shortest_path(shortest_path)
-                    self._is_shortest_path_drawn = True
 
 
     def _draw_grid(self, grid_size_input):          #TODO cords swapped?
