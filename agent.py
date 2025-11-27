@@ -22,7 +22,13 @@ class Agent:
         def __str__(self):
             return f"(Node: {self.node}, Parent:{self.parent})"
 
-    def search_bfs(self) -> None:
+    def get_shortest_path(self) -> list:
+        return None if self._shortest_path is None else list(self._shortest_path)
+
+    def get_current_point(self):
+        return self._current_point
+
+    def search_bfs(self):
         self._current_point = self._start_point
 
         while True:
@@ -33,12 +39,10 @@ class Agent:
                 self._shortest_path = None
                 return
             self._current_point = self._queue.get()
+            yield self._current_point
 
         self._shortest_path = self._reconstruct_shortest_path()
         return
-
-    def get_shortest_path(self) -> list:
-        return None if self._shortest_path is None else list(self._shortest_path)
 
     def _check_for_next_points(self, _current_point: tuple) -> None:
         x, y = _current_point
@@ -48,7 +52,7 @@ class Agent:
             if 0 <= nx < self._grid_size and 0 <= ny < self._grid_size:
                 if self._grid_list[nx][ny] != self._wall and (nx, ny) not in self._visited_points:
                     self._queue.put((nx,ny))
-                    self._visited_points.append((nx, ny)) # This needs to be there to avoid duplicates in queue
+                    self._visited_points.append((nx, ny)) # This needs to be here to avoid duplicates in queue
                     self._shortest_path.append(Agent.Node((nx, ny), _current_point))
 
 

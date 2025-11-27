@@ -22,6 +22,9 @@ class GUI:
         self._my_grid_offset_x = self._my_grid_offset_y = 5
         self._my_grid_rectangle_length = 0
 
+        self._my_agent = None
+        self._my_search_process = None
+
         self._my_canvas_width = self.CANVAS_WIDTH
         self._my_canvas_height = self.CANVAS_HEIGHT
         self._my_canvas = tkinter.Canvas(self._root,
@@ -88,14 +91,35 @@ class GUI:
         if self._my_grid is None:
             self._display_text.config(text=f"Error: Grid is not initialized!")
         else:
-            my_agent = agent.Agent(self._my_grid)
-            my_agent.search_bfs()
-            shortest_path = my_agent.get_shortest_path()
+            self._my_agent = agent.Agent(self._my_grid)
+            self._my_search_process = self._my_agent.search_bfs()
+            self._animate_search_process()
+            """  shortest_path = self._my_agent.get_shortest_path()
             if shortest_path is None:
                 self._display_text.config(text=f"No shortest Path exists!")
             elif not self._is_shortest_path_drawn:
                 self._draw_shortest_path(shortest_path)
-                self._is_shortest_path_drawn = True
+                self._is_shortest_path_drawn = True"""
+
+    def _animate_search_process(self):
+        if self._my_grid is None:
+            return
+        else:
+            try:
+                next_point = next(self._my_search_process)
+                self._draw_cell(next_point, "grey")
+
+                self._root.after(1, self._animate_search_process)
+
+            except StopIteration:
+                shortest_path = self._my_agent.get_shortest_path()
+
+                if shortest_path is None:
+                    self._display_text.config(text=f"No shortest Path exists!")
+                else:
+                    self._draw_shortest_path(shortest_path)
+                    self._is_shortest_path_drawn = True
+
 
     def _draw_grid(self, grid_size_input):          #TODO cords swapped?
         for column in range(grid_size_input):
