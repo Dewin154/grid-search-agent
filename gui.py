@@ -4,17 +4,22 @@ import grid
 
 
 class GUI:
+
+    WINDOW_WIDTH = 1280
+    WINDOW_HEIGHT = 1000
+    CANVAS_WIDTH = CANVAS_HEIGHT = 980
+
     def __init__(self):
         self._root = tkinter.Tk(screenName="Search Agent", baseName="Search Agent", className=" Search Agent Window", useTk=1)
-        self._root.minsize(1280, 1000)
+        self._root.minsize(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
         self._root.resizable(False, False)
 
         self._my_grid = None
         self._my_grid_offset_x = self._my_grid_offset_y = 5
         self._my_grid_rectangle_length = 0
 
-        self._my_canvas_width = 980
-        self._my_canvas_height = 980
+        self._my_canvas_width = self.CANVAS_WIDTH
+        self._my_canvas_height = self.CANVAS_HEIGHT
         self._my_canvas = tkinter.Canvas(self._root, width=self._my_canvas_width, height=self._my_canvas_height, bg="white")
         self._my_canvas.place(x=285, y=8)
 
@@ -84,56 +89,51 @@ class GUI:
                 self._draw_shortest_path(shortest_path)
                 self._is_shortest_path_drawn = True
 
-    def _draw_grid(self, grid_size_input):          # TODO redundancy with _draw_shortest_path()
-        x0 = self._my_grid_offset_x
-        y0 = self._my_grid_offset_y
-        x1 = x0 + self._my_grid_rectangle_length
-        y1 = y0 + self._my_grid_rectangle_length
-
+    def _draw_grid(self, grid_size_input):
         for column in range(grid_size_input):
-            offset_y = column * self._my_grid_rectangle_length
             for row in range(grid_size_input):
-                offset_x = row * self._my_grid_rectangle_length
-
-                top_left_x = x0 + offset_x
-                top_left_y = y0 + offset_y
-                down_right_x = x1 + offset_x
-                down_right_y = y1 + offset_y
-
                 if self._my_grid.get_grid()[column][row] == 1:
-                    self._draw_rectangle(top_left_x, top_left_y, down_right_x, down_right_y, "black")
+                    self._draw_cell((column, row), "black")
                 elif self._my_grid.get_grid()[column][row] == grid.Grid.START_POINT:
-                    self._draw_rectangle(top_left_x, top_left_y, down_right_x, down_right_y, "green")
+                    self._draw_cell((column, row), "green")
                 elif self._my_grid.get_grid()[column][row] == grid.Grid.GOAL_POINT:
-                    self._draw_rectangle(top_left_x, top_left_y, down_right_x, down_right_y, "blue")
+                    self._draw_cell((column, row), "blue")
                 else:
-                   self._draw_rectangle(top_left_x, top_left_y, down_right_x, down_right_y)
+                   self._draw_cell((column, row))
 
 
     def _draw_rectangle(self, top_left_corner_x, top_left_corner_y, down_right_corner_x, down_right_corner_y, color: str=None) -> None:
         self._my_canvas.create_rectangle(top_left_corner_x, top_left_corner_y, down_right_corner_x, down_right_corner_y, fill=color)
         return
 
-    def _calculate_rectangle_length(self, grid_size_input: int, offset) -> float:
-        return round((self._my_canvas_height-offset) / grid_size_input, 1)
 
-    def _draw_shortest_path(self, shortest_path):               #TODO maybe refactor? shorter?
+    def _draw_cell(self, cords: tuple, color: str=None):
+        column, row = cords
+
         x0 = self._my_grid_offset_x
         y0 = self._my_grid_offset_y
         x1 = x0 + self._my_grid_rectangle_length
         y1 = y0 + self._my_grid_rectangle_length
 
+        offset_x = (row * self._my_grid_rectangle_length)
+        offset_y = (column * self._my_grid_rectangle_length)
+
+        top_left_corner_x = x0 + offset_x
+        top_left_corner_y = y0 + offset_y
+        down_right_corner_x = x1 + offset_x
+        down_right_corner_y = y1 + offset_y
+
+        self._draw_rectangle(top_left_corner_x, top_left_corner_y, down_right_corner_x, down_right_corner_y, color)
+
+        return
+
+
+    def _calculate_rectangle_length(self, grid_size_input: int, offset) -> float:
+        return round((self._my_canvas_height-offset) / grid_size_input, 1)
+
+    def _draw_shortest_path(self, shortest_path):
         for cords in shortest_path:
-            column, row = cords
-            offset_x = (row*self._my_grid_rectangle_length)
-            offset_y = (column*self._my_grid_rectangle_length)
-
-            top_left_x = x0 + offset_x
-            top_left_y = y0 + offset_y
-            down_right_x = x1 + offset_x
-            down_right_y = y1 + offset_y
-
-            self._draw_rectangle(top_left_x, top_left_y, down_right_x, down_right_y, "red")
+            self._draw_cell(cords, "red")
         return
 
     @staticmethod
