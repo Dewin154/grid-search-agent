@@ -10,7 +10,11 @@ class GUI:
     CANVAS_WIDTH = CANVAS_HEIGHT = 980
 
     def __init__(self):
-        self._root = tkinter.Tk(screenName="Search Agent", baseName="Search Agent", className=" Search Agent Window", useTk=1)
+        self._root = tkinter.Tk(screenName="Search Agent",
+                                baseName="Search Agent",
+                                className=" Search Agent Window",
+                                useTk=1)
+
         self._root.minsize(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
         self._root.resizable(False, False)
 
@@ -20,7 +24,11 @@ class GUI:
 
         self._my_canvas_width = self.CANVAS_WIDTH
         self._my_canvas_height = self.CANVAS_HEIGHT
-        self._my_canvas = tkinter.Canvas(self._root, width=self._my_canvas_width, height=self._my_canvas_height, bg="white")
+        self._my_canvas = tkinter.Canvas(self._root,
+                                         width=self._my_canvas_width,
+                                         height=self._my_canvas_height,
+                                         bg="white")
+
         self._my_canvas.place(x=285, y=8)
 
         self._entry_field_label = tkinter.Label(self._root,
@@ -72,9 +80,9 @@ class GUI:
         if self._my_grid is not None:
             self._grid_size_input = 0
             self._my_grid = None
-            self._display_text.config(text="Grid deleted!")
-            self._my_canvas.delete("all")
             self._is_shortest_path_drawn = False
+            self._my_canvas.delete("all")
+            self._display_text.config(text="Grid deleted!")
 
     def _start_search(self):
         if self._my_grid is None:
@@ -89,7 +97,7 @@ class GUI:
                 self._draw_shortest_path(shortest_path)
                 self._is_shortest_path_drawn = True
 
-    def _draw_grid(self, grid_size_input):
+    def _draw_grid(self, grid_size_input):          #TODO cords swapped?
         for column in range(grid_size_input):
             for row in range(grid_size_input):
                 if self._my_grid.get_grid()[column][row] == 1:
@@ -127,14 +135,13 @@ class GUI:
 
         return
 
-
-    def _calculate_rectangle_length(self, grid_size_input: int, offset) -> float:
-        return round((self._my_canvas_height-offset) / grid_size_input, 1)
-
     def _draw_shortest_path(self, shortest_path):
         for cords in shortest_path:
             self._draw_cell(cords, "red")
         return
+
+    def _calculate_rectangle_length(self, grid_size_input: int, offset) -> float:
+        return round((self._my_canvas_height-offset) / grid_size_input, 1)
 
     @staticmethod
     def _validate_input(grid_size: str) -> int:
