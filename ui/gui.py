@@ -1,8 +1,6 @@
 import tkinter
-from tkinter.constants import HORIZONTAL
 
-import agent
-import grid
+from logic import agent, grid
 
 
 class GUI:
@@ -19,6 +17,12 @@ class GUI:
 
         self._root.minsize(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
         self._root.resizable(False, False)
+
+        try:
+            icon_img = tkinter.PhotoImage(file="resources/agent_icon.png")
+            self._root.iconphoto(False, icon_img)
+        except Exception as e:
+            print(f"Couldn't load icon: {e}")
 
         self._my_grid = None
         self._my_grid_offset_x = self._my_grid_offset_y = 5
