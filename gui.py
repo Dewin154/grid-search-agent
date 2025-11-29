@@ -1,4 +1,6 @@
 import tkinter
+from tkinter.constants import HORIZONTAL
+
 import agent
 import grid
 
@@ -13,7 +15,7 @@ class GUI:
         self._root = tkinter.Tk(screenName="Search Agent",
                                 baseName="Search Agent",
                                 className=" Search Agent Window",
-                                useTk=1)
+                                useTk=True)
 
         self._root.minsize(self.WINDOW_WIDTH, self.WINDOW_HEIGHT)
         self._root.resizable(False, False)
@@ -41,7 +43,7 @@ class GUI:
         self._entry_field_label.place(x=0, y=0)
 
         self._display_text = tkinter.Label(self._root, text="")
-        self._display_text.place(relx=0.094, y = 130, anchor="center")
+        self._display_text.place(relx=0.094, y=130, anchor="center")
 
         self._entry_field_for_gird_size = tkinter.Entry(self._root)
         self._entry_field_for_gird_size.place(x=60, y=30)
@@ -52,10 +54,16 @@ class GUI:
         self._clear_button = tkinter.Button(self._root, text="Delete grid", width=10, bg="red", command=self._delete_grid)
         self._clear_button.place(x=82, y=90)
 
+        self._slider_ms_label = tkinter.Label(self._root, text="Search animation in ms")
+        self._slider_ms_label.place(x=60, y=150)
+        self._slider_ms = tkinter.Scale(self._root, from_=1, to=50, orient="horizontal")
+        self._slider_ms.place(x=70, y=170)
+
         self._start_search_button = tkinter.Button(self._root, text="Start Search", width=10, command=self._start_search)
-        self._start_search_button.place(x =82, y=180)
+        self._start_search_button.place(x=82, y=950)
 
         self._user_has_started_search = False
+        self._animation_speed_in_ms = 1
 
 
     def run(self):
@@ -66,6 +74,7 @@ class GUI:
         self._grid_size_input = self._validate_input(self._grid_size_input)
         self._my_grid_rectangle_length = self._calculate_rectangle_length(self._grid_size_input, self._my_grid_offset_x)
         self._entry_field_for_gird_size.delete(0, "end")
+        self._save_slider_input()
 
         if self._my_grid is None:
             if self._grid_size_input == "":
@@ -105,7 +114,7 @@ class GUI:
                 next_point = next(self._my_search_process)
                 self._draw_cell(next_point, "grey")
 
-                self._root.after(1, self._animate_search_process)
+                self._root.after(self._animation_speed_in_ms, self._animate_search_process)
 
             except StopIteration:
                 shortest_path = self._my_agent.get_shortest_path()
@@ -161,6 +170,9 @@ class GUI:
 
     def _calculate_rectangle_length(self, grid_size_input: int, offset) -> float:
         return round((self._my_canvas_height-offset) / grid_size_input, 1)
+
+    def _save_slider_input(self):
+        self._animation_speed_in_ms = self._slider_ms.get()
 
     @staticmethod
     def _validate_input(grid_size: str) -> int:
