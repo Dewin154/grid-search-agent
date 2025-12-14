@@ -4,7 +4,6 @@ from logic import agent, grid
 
 
 class GUI:
-
     WINDOW_WIDTH = 1280
     WINDOW_HEIGHT = 1000
     CANVAS_WIDTH = CANVAS_HEIGHT = 980
@@ -52,10 +51,12 @@ class GUI:
         self._entry_field_for_gird_size = tkinter.Entry(self._root)
         self._entry_field_for_gird_size.place(x=60, y=30)
 
-        self._confirm_button = tkinter.Button(self._root, text="Confirm",bg="green", width=10, command=self._save_input)
+        self._confirm_button = tkinter.Button(self._root, text="Confirm", bg="green", width=10,
+                                              command=self._save_input)
         self._confirm_button.place(x=82, y=60)
 
-        self._clear_button = tkinter.Button(self._root, text="Delete grid", width=10, bg="red", command=self._delete_grid)
+        self._clear_button = tkinter.Button(self._root, text="Delete grid", width=10, bg="red",
+                                            command=self._delete_grid)
         self._clear_button.place(x=82, y=90)
 
         self._slider_ms_label = tkinter.Label(self._root, text="Search animation in ms")
@@ -63,12 +64,12 @@ class GUI:
         self._slider_ms = tkinter.Scale(self._root, from_=1, to=50, orient="horizontal")
         self._slider_ms.place(x=70, y=170)
 
-        self._start_search_button = tkinter.Button(self._root, text="Start Search", width=10, command=self._start_search)
+        self._start_search_button = tkinter.Button(self._root, text="Start Search", width=10,
+                                                   command=self._start_search)
         self._start_search_button.place(x=82, y=950)
 
         self._user_has_started_search = False
         self._animation_speed_in_ms = 1
-
 
     def run(self):
         self._root.mainloop()
@@ -86,7 +87,8 @@ class GUI:
             else:
                 self._my_grid = grid.Grid(self._grid_size_input)
                 self._grid_size_input = self._my_grid.get_grid_size()
-                self._display_text.config(text=f"Registered grid size: {self._grid_size_input} x {self._grid_size_input}")
+                self._display_text.config(
+                    text=f"Registered grid size: {self._grid_size_input} x {self._grid_size_input}")
                 self._draw_grid(self._grid_size_input)
         else:
             if self._grid_size_input != "":
@@ -128,8 +130,7 @@ class GUI:
                 else:
                     self._draw_shortest_path(shortest_path)
 
-
-    def _draw_grid(self, grid_size_input):          #TODO cords swapped?
+    def _draw_grid(self, grid_size_input):  #TODO cords swapped?
         for column in range(grid_size_input):
             for row in range(grid_size_input):
                 if self._my_grid.get_grid()[column][row] == 1:
@@ -139,15 +140,15 @@ class GUI:
                 elif self._my_grid.get_grid()[column][row] == grid.Grid.GOAL_POINT:
                     self._draw_cell((column, row), "blue")
                 else:
-                   self._draw_cell((column, row))
+                    self._draw_cell((column, row))
 
-
-    def _draw_rectangle(self, top_left_corner_x, top_left_corner_y, down_right_corner_x, down_right_corner_y, color: str=None) -> None:
-        self._my_canvas.create_rectangle(top_left_corner_x, top_left_corner_y, down_right_corner_x, down_right_corner_y, fill=color)
+    def _draw_rectangle(self, top_left_corner_x, top_left_corner_y, down_right_corner_x, down_right_corner_y,
+                        color: str = None) -> None:
+        self._my_canvas.create_rectangle(top_left_corner_x, top_left_corner_y, down_right_corner_x, down_right_corner_y,
+                                         fill=color)
         return
 
-
-    def _draw_cell(self, cords: tuple, color: str=None):
+    def _draw_cell(self, cords: tuple, color: str = None):
         column, row = cords
 
         x0 = self._my_grid_offset_x
@@ -173,16 +174,19 @@ class GUI:
         return
 
     def _calculate_rectangle_length(self, grid_size_input: int, offset) -> float:
-        return round((self._my_canvas_height-offset) / grid_size_input, 1)
+        return round((self._my_canvas_height - offset) / grid_size_input, 1)
 
     def _save_slider_input(self):
         self._animation_speed_in_ms = self._slider_ms.get()
 
-    @staticmethod
-    def _validate_input(grid_size: str) -> int:
+    def _validate_input(self, grid_size: str) -> int:
         default_value = 10
-        try:
-            temp = int(grid_size)
-        except ValueError:
-            temp = default_value
-        return temp if grid.Grid.MINIMAL_GRID_SIZE < temp <= grid.Grid.MAXIMAL_GRID_SIZE else default_value
+
+        if self._my_grid is None:
+            try:
+                temp = int(grid_size)
+            except ValueError:
+                temp = default_value
+            return temp if grid.Grid.MINIMAL_GRID_SIZE < temp <= grid.Grid.MAXIMAL_GRID_SIZE else default_value
+        else:
+            return self._my_grid.get_grid_size()
