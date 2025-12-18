@@ -2,6 +2,7 @@ import tkinter
 
 from logic import grid
 from logic.agent import agent_bfs
+from logic.agent import agent_dfs
 
 
 class GUI:
@@ -109,8 +110,8 @@ class GUI:
             self._display_text.config(text=f"Error: Grid is not initialized!")
         elif not self._user_has_started_search:
             self._user_has_started_search = True
-            self._my_agent = agent_bfs.AgentBFS(self._my_grid)
-            self._my_search_process = self._my_agent.search_bfs()
+            self._my_agent = agent_dfs.AgentDFS(self._my_grid)
+            self._my_search_process = self._my_agent.search_dfs()
             self._animate_search_process()
 
     def _animate_search_process(self):

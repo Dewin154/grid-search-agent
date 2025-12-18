@@ -7,6 +7,7 @@ class AgentBFS(Agent):
         super().__init__(grid)
         self._queue = Queue()
 
+    # TODO redundancy with agent_dfs.py
     def search_bfs(self):
         self._current_point = self._start_point
 
