@@ -1,6 +1,8 @@
 import tkinter
 
-from logic import agent, grid
+from logic import grid
+from logic.agent import agent_bfs
+from logic.agent import agent_dfs
 
 
 class GUI:
@@ -68,6 +70,20 @@ class GUI:
                                                    command=self._start_search)
         self._start_search_button.place(x=82, y=950)
 
+        self._algorithm_radiobutton = tkinter.IntVar()
+        self._algorithm_radiobutton.set(1)
+        self._algorithms = [
+            ("Breadth-First-Search", 1, 40, 225),
+            ("Depth-First-Search", 2, 40, 250)
+        ]
+
+        for txt, val, x, y in self._algorithms:
+            tkinter.Radiobutton(self._root,
+                                text=txt,
+                                padx=20,
+                                variable=self._algorithm_radiobutton,
+                                value=val).place(x=x, y=y)
+
         self._user_has_started_search = False
         self._animation_speed_in_ms = 1
 
@@ -104,15 +120,20 @@ class GUI:
             self._display_text.config(text="Grid deleted!")
 
     def _start_search(self):
+        self._save_radiobutton_algorithms_input()
         if self._my_grid is None:
             self._display_text.config(text=f"Error: Grid is not initialized!")
         elif not self._user_has_started_search:
             self._user_has_started_search = True
-            self._my_agent = agent.Agent(self._my_grid)
-            self._my_search_process = self._my_agent.search_bfs()
+            if self._algorithm_radiobutton.get() == 1:
+                self._my_agent = agent_bfs.AgentBFS(self._my_grid)
+                self._my_search_process = self._my_agent.search()
+            elif self._algorithm_radiobutton.get() == 2:
+                self._my_agent = agent_dfs.AgentDFS(self._my_grid)
+                self._my_search_process = self._my_agent.search()
             self._animate_search_process()
 
-    def _animate_search_process(self):
+    def _animate_search_process(self) -> None:
         if self._my_grid is None:
             return
         else:
@@ -130,7 +151,7 @@ class GUI:
                 else:
                     self._draw_shortest_path(shortest_path)
 
-    def _draw_grid(self, grid_size_input):  #TODO cords swapped?
+    def _draw_grid(self, grid_size_input) -> None:  #TODO cords swapped?
         for column in range(grid_size_input):
             for row in range(grid_size_input):
                 if self._my_grid.get_grid()[column][row] == 1:
@@ -178,6 +199,10 @@ class GUI:
 
     def _save_slider_input(self):
         self._animation_speed_in_ms = self._slider_ms.get()
+
+    def _save_radiobutton_algorithms_input(self):
+        temp = self._algorithm_radiobutton.get()
+        self._algorithm_radiobutton.set(temp)
 
     def _validate_input(self, grid_size: str) -> int:
         default_value = 10
